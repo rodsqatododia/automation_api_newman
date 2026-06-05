@@ -1,0 +1,190 @@
+{
+  "info": {
+    "_postman_id": "8fdc171e-5361-4681-9283-2d5639b7e1b5",
+    "name": "PetStore",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55437077",
+    "_collection_link": "https://go.postman.co/collection/55437077-8fdc171e-5361-4681-9283-2d5639b7e1b5?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CT-01 - Deve ser possivel criar um novo cadastro de pet",
+      "item": [
+        {
+          "name": "Update pet",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "pm.test(\"Response time is less than 200ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"It should be possible to update the name.\" , function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.name).to.eql(pm.environment.get(\"update_pet_name\"))\r",
+                  "    pm.expect(jsonData.status).to.eql(pm.environment.get(\"status\"))\r",
+                  "    console.log(jsonData.name)\r",
+                  "    console.log(jsonData)\r",
+                  "} )\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": {{idPet}},\r\n  \"category\": {\r\n    \"id\": 1234,\r\n    \"name\": \"Categoria 01\"\r\n  },\r\n  \"name\": \"{{update_pet_name}}\",\r\n  \"photoUrls\": [\r\n    \"boy photo\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"boy tags\"\r\n    }\r\n  ],\r\n  \"status\": \"{{status}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pet",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Find Pet by Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pet/:petid",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pet",
+                ":petid"
+              ],
+              "variable": [
+                {
+                  "key": "petid",
+                  "value": "997078"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Finds Pets by status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pet/findByStatus?status=pending,sold,available",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pet",
+                "findByStatus"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending,sold,available"
+                },
+                {
+                  "key": "status",
+                  "value": "available",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add a new pet to the store",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Capturando o id\",  function() {\r",
+                  "\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    pm.environment.set(\"idPet\", jsonData.id);\r",
+                  "})\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const randomId = Math.floor(Math.random() * 1000000);\r",
+                  "pm.environment.set(\"idPet\", randomId);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": {{idPet}},\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"Categoria 01\"\r\n  },\r\n  \"name\": \"{{first_name_pet}}\",\r\n  \"photoUrls\": [\r\n    \"boy photo\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"boy tags\"\r\n    }\r\n  ],\r\n  \"status\": \"{{status}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pet",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
