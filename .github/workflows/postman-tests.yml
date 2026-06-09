@@ -2,8 +2,8 @@ name: Postman Tests
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    branches:
+      - main
 
 jobs:
   newman-tests:
@@ -19,12 +19,14 @@ jobs:
           node-version: 20
 
       - name: Install Newman
-        run: npm install -g newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-junit
 
       - name: Run Postman tests
         run: |
-          newman run postman/PetStore.postman_collection \
-            -e postman/petstore.postman_environment \
+          newman run postman/PetStore.postman_collection.json \
+            -e postman/petstore.postman_environment.json \
             --reporters cli,junit \
             --reporter-junit-export results.xml
 
