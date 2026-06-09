@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Postman tests
         run: |
-          newman run postman/PetStore.postman_collection.json \
+          newman run postman/Petstore.postman_collection.json \
             -e postman/petstore.postman_environment.json \
             --reporters cli,junit \
             --reporter-junit-export results.xml
