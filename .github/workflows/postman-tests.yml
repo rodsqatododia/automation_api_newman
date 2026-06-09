@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
   newman-tests:
     runs-on: ubuntu-latest
@@ -19,9 +23,7 @@ jobs:
           node-version: 20
 
       - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-junit
+        run: npm install -g newman
 
       - name: Run Postman tests
         run: |
@@ -31,6 +33,7 @@ jobs:
             --reporter-junit-export results.xml
 
       - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: newman-results
